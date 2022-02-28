@@ -14,5 +14,20 @@ data = {
             "email": 'evita.naranjo@gmail.com',
             "password": '1234'
         }
+    ],
+    "Ingredient":[
+        {
+            "id": 1,
+            "name": 'Espinacas'
+        },
+        {
+            "id": 2,
+            "name": 'Pollo' 
+        },
+        {
+            "id": 3,
+            "name": 'Tofu'
+        }
+         
     ]
 }

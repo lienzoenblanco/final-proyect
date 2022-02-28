@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.app.ingredient.controler import create_ingredient
+from api.app.ingredient.controler import create_ingredient, list_ingredient
+
 
 ingredients = Blueprint('ingredients', __name__)
 
@@ -15,3 +16,10 @@ def add_ingredient():
     else:
         return jsonify(new_ingredient), 201
 
+@ingredients.route('/', methods=['GET'])
+def get_ingredient_list():
+    page = int(request.args.get('page', 1))
+    search = request.args.get('search')
+    ingredient_list = list_ingredient(page=page, search=search)
+
+    return jsonify(ingredient_list), 200

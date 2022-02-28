@@ -8,6 +8,20 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
+def list_ingredient(page=1, per_page=20, search=""):
+    ingredient_page = Ingredient.query.filter(Ingredient.name.ilike(f'%{search}%')).paginate(page,per_page)
+    
+    ingredient_list = [] 
+    for ingredient in ingredient_page.items:
+        ingredient_list.append(ingredient.serialize()) 
+
+    return dict(
+        items=ingredient_list, 
+        total=ingredient_page.total, 
+        current_page=ingredient_page.page
+    )
+
+
 def create_ingredient(body):
     try:
         if not body:
@@ -35,3 +49,5 @@ def create_ingredient(body):
         db.session.rollback()
         logger.exception('[ERROR CREATE INGREDIENT]: Unexepcted')
         return None
+
+
