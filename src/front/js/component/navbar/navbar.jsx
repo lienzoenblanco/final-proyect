@@ -24,7 +24,7 @@ export const Navbar = () => {
           </span>
         </Link>
       </div>
-      {!isLogged && (
+      {!isLogged ? (
         <div className="container-buttons">
           <Link to="/register">
             <button className="btn btn-outline-primary btn-register">
@@ -35,8 +35,7 @@ export const Navbar = () => {
             <button className="btn btn-outline-primary btn-login">Login</button>
           </Link>
         </div>
-      )}
-      {isLogged && (
+      ) : (
         <div className="container-buttons menu">
           <Link to="/mis-recetas">
             <button className="btn btn-outline-primary btn-mis-recetas">
