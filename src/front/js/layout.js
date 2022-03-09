@@ -11,6 +11,7 @@ import { Login } from "./pages/login/login.jsx";
 import { Register } from "./pages/register/register.jsx";
 import { MisRecetas } from "./pages/misRecetas/misRecetas.jsx";
 import { MisMenus } from "./pages/misMenus/misMenus.jsx";
+import { SubirRecetas } from "./pages/subirRecetas/subirRecetas.jsx";
 
 import { Navbar } from "./component/navbar/navbar.jsx";
 import { Footer } from "./component/footer.jsx";
@@ -41,6 +42,9 @@ const Layout = () => {
             </Route>
             <Route exact path="/mis-menus">
               <MisMenus />
+            </Route>
+            <Route exact path="/recipes/create">
+              <SubirRecetas />
             </Route>
             <Route>
               <h1>Not found!</h1>

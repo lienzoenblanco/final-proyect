@@ -1,0 +1,16 @@
+.form-select {
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+.input-group {
+  width: auto;
+}
+
+.ingredients {
+  width: 40%;
+}
+
+textarea {
+  margin-bottom: 15px;
+}
