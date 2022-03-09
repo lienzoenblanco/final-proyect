@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.app.recipe.controller import create_recipe, get_recipe, get_recipe_list, update_recipe
 from api.app.recipe import controller
 from cloudinary.uploader import upload
 import cloudinary
@@ -70,8 +69,7 @@ def get_recipe(id):
    
 # get for public recipes without token   
 @recipes.route('/get/public/<id>', methods = ['GET'])
-
-def get_recipe(id):
+def get_public_recipe(id):
            
     recipe = controller.get_recipe(id)
 
@@ -96,7 +94,6 @@ def update_recipe(id):
 
 
 @recipes.route('/', methods=['GET'])
-
 def get_recipe_list():
     page = int(request.args.get('page', 1))
     search = request.args.get('search')

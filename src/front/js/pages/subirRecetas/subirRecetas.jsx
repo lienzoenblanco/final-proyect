@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createRecipe } from "../../service/recipe";
 
 import "../subirRecetas/subirRecetas.css";
 
@@ -6,7 +7,7 @@ export const SubirRecetas = () => {
   const [ingredientList, setIngredientList] = useState([]);
   const [ingredient, setIngredient] = useState("");
   const [title, setTitle] = useState("");
-  const [preparation, setPreparation] = useState("");
+  const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
   const [img, setImg] = useState();
 
@@ -54,15 +55,32 @@ export const SubirRecetas = () => {
     );
   };
 
-  const handleChangePreparation = (event) => {
-    setPreparation(event.target.value);
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
   };
 
   const submit = () => {
     console.log("title", title);
-    console.log("preparation", preparation);
+    console.log("description", description);
     console.log("tag", tag);
     console.log("img", img);
+    const payload = {
+      title: title,
+      description: description,
+      tag: tag,
+      img: img,
+      // TODO: sacarlo del form
+      private: true,
+      // TODO: no enviar el id_user lo tiene que sacar del jwt el backend
+      id_user: 1,
+    };
+    createRecipe(payload)
+      .then((resp) => resp.json())
+      .then((data) => {
+        alert("creaadp");
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -134,7 +152,7 @@ export const SubirRecetas = () => {
         <div className="form-floating">
           <p>Preparación:</p>
           <textarea
-            onChange={handleChangePreparation}
+            onChange={handleChangeDescription}
             className="form-control"
             placeholder="Leave a comment here"
             id="floatingTextarea"

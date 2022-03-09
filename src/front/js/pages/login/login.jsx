@@ -18,7 +18,7 @@ export const Login = () => {
           setMessage("User does not exist");
           setShowSpinner(false);
         } else {
-          localStorage.setItem("token", JSON.stringify(data));
+          localStorage.setItem("token", data["token"]);
           console.log(JSON.parse(localStorage.getItem("token")));
           history.push("/");
         }
