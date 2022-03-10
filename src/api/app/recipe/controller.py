@@ -21,7 +21,7 @@ def create_recipe(body, url_img):
         "photo":url_img,
         "title":body.get('title'),
         "description": body.get('description'),
-        "private": body.get('private'),
+        "private": bool(body.get('private')),
         "id_user": body.get('id_user'), 
         "tag": body.get('tag')           
     }

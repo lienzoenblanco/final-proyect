@@ -39,7 +39,7 @@ def create_recipe():
 
     url_img =img_data["url"]
     body = request.form.to_dict()
-
+    
     new_recipe = controller.create_recipe(body, url_img)
     if new_recipe is None:
         return jsonify('Internal server error'), 500

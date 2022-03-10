@@ -10,6 +10,28 @@ export const SubirRecetas = () => {
   const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
   const [img, setImg] = useState();
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const isFormValid = () => {
+    if (title.length == 0) {
+      setErrorMessage("Falta el título");
+      return false;
+    }
+    if (tag == 0) {
+      setErrorMessage("Tienes que indicar si es comida o cena");
+      return false;
+    }
+    if (img == undefined) {
+      setErrorMessage("Falta la imagen");
+      return false;
+    }
+    if (description.length == 0) {
+      setErrorMessage("Falta la descripción");
+      return false;
+    }
+    return true;
+  };
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
@@ -32,6 +54,10 @@ export const SubirRecetas = () => {
       // };
       // reader.readAsDataURL(e.target.files[0]);
     }
+  };
+
+  const handleChangeIsPrivate = (event) => {
+    setIsPrivate(event.target.checked);
   };
 
   const handleChangeIngredient = (event) => {
@@ -60,24 +86,23 @@ export const SubirRecetas = () => {
   };
 
   const submit = () => {
-    console.log("title", title);
-    console.log("description", description);
-    console.log("tag", tag);
-    console.log("img", img);
+    if (!isFormValid()) {
+      return;
+    }
     const payload = {
       title: title,
       description: description,
       tag: tag,
       img: img,
-      // TODO: sacarlo del form
-      private: true,
+      private: isPrivate,
       // TODO: no enviar el id_user lo tiene que sacar del jwt el backend
       id_user: 1,
     };
+    console.log(payload);
     createRecipe(payload)
       .then((resp) => resp.json())
       .then((data) => {
-        alert("creaadp");
+        alert("WIP:Receta creada");
         console.log(data);
       })
       .catch((err) => console.log(err));
@@ -85,40 +110,52 @@ export const SubirRecetas = () => {
 
   return (
     <div className="container">
-      <div className="row justify-content-evenly">
-        <div className="col-4">
-          <div className="input-group mb-3">
-            <input
-              onChange={handleChangeImg}
-              id="input-b1"
-              name="input-b1"
-              type="file"
-              className="file"
-              data-browse-on-zone-click="true"
-            />
-          </div>
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+      <h3>Crear nueva receta</h3>
+      <div className="row input-group mb-3">
+        <input
+          onChange={handleChangeTitle}
+          type="text"
+          className="form-control"
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+          placeholder="Título de la receta"
+        />
+      </div>
+      <div className="row input-group mb-3">
+        <select
+          className="form-select"
+          aria-label="Default select example"
+          onChange={handleChangeTag}
+        >
+          <option value="0">¿Es una comida, una cena o ambas?</option>
+          <option value="1">Comida</option>
+          <option value="2">Cena</option>
+          <option value="3">Ambas</option>
+        </select>
+        <div className="form-check">
+          <input
+            onChange={handleChangeIsPrivate}
+            className="form-check-input"
+            type="checkbox"
+            value={isPrivate}
+            id="flexCheckDefault"
+          />
+          <label className="form-check-label" for="flexCheckDefault">
+            Esta receta es privada
+          </label>
         </div>
-        <div className="col-4">
-          <div className="input-group mb-3">
-            <input
-              onChange={handleChangeTitle}
-              type="text"
-              className="form-control"
-              aria-label="Sizing example input"
-              aria-describedby="inputGroup-sizing-default"
-              placeholder="Título de la receta"
-            />
-          </div>
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            onChange={handleChangeTag}
-          >
-            <option value="null">¿Es una comida, una cena o ambas?</option>
-            <option value="1">Comida</option>
-            <option value="2">Cena</option>
-            <option value="3">Ambas</option>
-          </select>
+      </div>
+      <div className="row">
+        <div className="input-group mb-3">
+          <input
+            onChange={handleChangeImg}
+            id="input-b1"
+            name="input-b1"
+            type="file"
+            className="file"
+            data-browse-on-zone-click="true"
+          />
         </div>
       </div>
       <div className="row">
@@ -137,20 +174,24 @@ export const SubirRecetas = () => {
                 <li key={index}>
                   {ingredientPrint}
                   <a
+                    className="icon"
                     href=""
                     onClick={(event) => {
                       remove(event, index);
                     }}
                   >
-                    🗑
+                    X
                   </a>
                 </li>
               );
             })}
           </ul>
         </form>
+      </div>
+
+      <div className="row">
         <div className="form-floating">
-          <p>Preparación:</p>
+          <p>Descripción:</p>
           <textarea
             onChange={handleChangeDescription}
             className="form-control"

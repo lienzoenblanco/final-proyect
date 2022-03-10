@@ -1,14 +1,43 @@
+h3 {
+  margin-bottom: 10px;
+}
+
 .form-select {
-  width: 100%;
+  width: 50%;
   margin-bottom: 3px;
 }
 
 .input-group {
-  width: auto;
+  width: 50%;
 }
 
 .ingredients {
-  width: 40%;
+  width: 50%;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  width: 30%;
+  position: relative;
+}
+
+ul li::before {
+  content: "\2022";
+  color: #5c434d;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.icon {
+  text-decoration: none;
+  color: #b9573b;
+  position: absolute;
+  right: 0;
+  font-size: 20px;
 }
 
 textarea {
