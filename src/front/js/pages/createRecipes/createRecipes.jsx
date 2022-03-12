@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { createRecipe } from "../../service/recipe";
 
-import "../subirRecetas/subirRecetas.css";
+import "../createRecipes/createRecipes.css";
 
-export const SubirRecetas = () => {
+export const CreateRecipes = () => {
+  const defaulnIngredient = {
+    name: "",
+    id_ingredient: null,
+    quantity: 1,
+  };
   const [ingredientList, setIngredientList] = useState([]);
-  const [ingredient, setIngredient] = useState("");
+  const [ingredient, setIngredient] = useState({ ...defaulnIngredient });
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
@@ -61,15 +66,15 @@ export const SubirRecetas = () => {
   };
 
   const handleChangeIngredient = (event) => {
-    setIngredient(event.target.value);
+    setIngredient({ ...ingredient, name: event.target.value });
   };
 
   const addNewIngredient = (event) => {
     event.preventDefault();
-    if (ingredient.trim().length !== 0) {
+    if (ingredient.name.trim().length !== 0) {
       setIngredientList([...ingredientList, ingredient]);
     }
-    setIngredient("");
+    setIngredient({ ...defaulnIngredient });
   };
 
   const remove = (event, position) => {
@@ -163,7 +168,7 @@ export const SubirRecetas = () => {
           <p>Ingredientes:</p>
           <input
             type="text"
-            value={ingredient}
+            value={ingredient.name}
             className="form-control ingredients"
             aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-default"
@@ -172,7 +177,7 @@ export const SubirRecetas = () => {
             {ingredientList.map((ingredientPrint, index) => {
               return (
                 <li key={index}>
-                  {ingredientPrint}
+                  {ingredientPrint.name}
                   <a
                     className="icon"
                     href=""

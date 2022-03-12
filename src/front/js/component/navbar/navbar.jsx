@@ -37,12 +37,12 @@ export const Navbar = () => {
         </div>
       ) : (
         <div className="container-buttons menu">
-          <Link to="/mis-recetas">
+          <Link to="/my-recipes">
             <button className="btn btn-outline-primary btn-mis-recetas">
               Mis recetas
             </button>
           </Link>
-          <Link to="/mis-menus">
+          <Link to="/my-menus">
             <button className="btn btn-outline-primary btn-mis-menus">
               Mis menús
             </button>

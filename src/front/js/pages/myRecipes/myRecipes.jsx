@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-import "../misRecetas/misRecetas.css";
+import "../myRecipes/myRecipes.css";
 
-export const MisRecetas = () => {
+export const MyRecipes = () => {
   return (
     <div>
       <p>Estás en mis recetas</p>
       <Link to="/recipes/create">
-        <button className="btn btn-outline-primary btn-register">
+        <button className="btn btn-outline-primary btn-new-recipe">
           Crear receta
         </button>
       </Link>
