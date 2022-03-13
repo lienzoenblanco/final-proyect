@@ -19,7 +19,6 @@ export const Login = () => {
           setShowSpinner(false);
         } else {
           localStorage.setItem("token", data["token"]);
-          console.log(JSON.parse(localStorage.getItem("token")));
           history.push("/");
         }
       })

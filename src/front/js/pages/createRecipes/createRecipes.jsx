@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Context } from "../../store/appContext";
+
 import { createRecipe } from "../../service/recipe";
 
 import "../createRecipes/createRecipes.css";
 
 export const CreateRecipes = () => {
+  const { actions } = useContext(Context);
+  const history = useHistory();
   const defaulnIngredient = {
     name: "",
     id_ingredient: null,
@@ -103,12 +108,11 @@ export const CreateRecipes = () => {
       // TODO: no enviar el id_user lo tiene que sacar del jwt el backend
       id_user: 1,
     };
-    console.log(payload);
     createRecipe(payload)
       .then((resp) => resp.json())
       .then((data) => {
-        alert("WIP:Receta creada");
-        console.log(data);
+        actions.showSuccessMessage("Tu receta ha sido creada");
+        history.push("/my-recipes");
       })
       .catch((err) => console.log(err));
   };
@@ -143,10 +147,10 @@ export const CreateRecipes = () => {
             onChange={handleChangeIsPrivate}
             className="form-check-input"
             type="checkbox"
-            value={isPrivate}
+            checked={isPrivate}
             id="flexCheckDefault"
           />
-          <label className="form-check-label" for="flexCheckDefault">
+          <label className="form-check-label" htmlFor="flexCheckDefault">
             Esta receta es privada
           </label>
         </div>
@@ -164,10 +168,11 @@ export const CreateRecipes = () => {
         </div>
       </div>
       <div className="row">
-        <form onSubmit={addNewIngredient} onChange={handleChangeIngredient}>
+        <form onSubmit={addNewIngredient}>
           <p>Ingredientes:</p>
           <input
             type="text"
+            onChange={handleChangeIngredient}
             value={ingredient.name}
             className="form-control ingredients"
             aria-label="Sizing example input"

@@ -27,25 +27,19 @@ export const Navbar = () => {
       {!isLogged ? (
         <div className="container-buttons">
           <Link to="/register">
-            <button className="btn btn-outline-primary btn-register">
-              Registro
-            </button>
+            <button className="btn btn-primary">Registro</button>
           </Link>
           <Link to="/login">
-            <button className="btn btn-outline-primary btn-login">Login</button>
+            <button className="btn btn-primary">Login</button>
           </Link>
         </div>
       ) : (
         <div className="container-buttons menu">
           <Link to="/my-recipes">
-            <button className="btn btn-outline-primary btn-mis-recetas">
-              Mis recetas
-            </button>
+            <button className="btn btn-primary">Mis recetas</button>
           </Link>
           <Link to="/my-menus">
-            <button className="btn btn-outline-primary btn-mis-menus">
-              Mis menús
-            </button>
+            <button className="btn btn-primary">Mis menús</button>
           </Link>
         </div>
       )}
