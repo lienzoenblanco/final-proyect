@@ -1,13 +1,14 @@
+import json
 from sqlalchemy.exc import IntegrityError,InvalidRequestError
 
 from api.utils import APIException
-from api.models.index import db, Recipe, User
+from api.models.index import db, Recipe, User, RecipeIngredient
 
 from logging import getLogger
 
 logger = getLogger(__name__)
 
-def create_recipe(body, url_img):
+def create_recipe(body, url_img=None):
 
     if not body:
         raise APIException(status_code=400, payload={
@@ -16,7 +17,6 @@ def create_recipe(body, url_img):
             }
         })
 
-  
     recipe_info = {
         "photo":url_img,
         "title":body.get('title'),
@@ -45,6 +45,12 @@ def create_recipe(body, url_img):
 
     new_recipe = Recipe(**recipe_info)
     db.session.add(new_recipe)
+    db.session.flush()
+    ingredient_list = []
+    ingredient_list_raw = json.loads(body.get('ingredient_list')) if body.get('ingredient_list') else []
+    for ingredient_raw in ingredient_list_raw:
+        db.session.add(RecipeIngredient(id_ingredient=int(ingredient_raw['id']), id_recipe=new_recipe.id))
+
     db.session.commit()
     return new_recipe.serialize()
 

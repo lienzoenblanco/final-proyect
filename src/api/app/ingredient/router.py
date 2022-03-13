@@ -7,7 +7,7 @@ ingredients = Blueprint('ingredients', __name__)
 @ingredients.route('/create', methods=['POST'])
 def add_ingredient():
     body = request.get_json()
-
+    
     new_ingredient = create_ingredient(body)
     if new_ingredient is None:
         return jsonify('Internal server error'), 500

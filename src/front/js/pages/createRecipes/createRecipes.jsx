@@ -43,10 +43,7 @@ export const CreateRecipes = () => {
       setErrorMessage("Tienes que indicar si es comida o cena");
       return false;
     }
-    if (img == undefined) {
-      setErrorMessage("Falta la imagen");
-      return false;
-    }
+
     if (description.length == 0) {
       setErrorMessage("Falta la descripción");
       return false;
@@ -93,20 +90,28 @@ export const CreateRecipes = () => {
     if (!isFormValid()) {
       return;
     }
+    const ingredient_list = selectedIngredientList.map((ingredient) => {
+      return { id: ingredient.value, name: ingredient.label };
+    });
     const payload = {
-      title: title,
-      description: description,
-      tag: tag,
-      img: img,
+      title,
+      description,
+      tag,
+      img,
       private: isPrivate,
       // TODO: no enviar el id_user lo tiene que sacar del jwt el backend
       id_user: 1,
+      ingredient_list: ingredient_list,
     };
     createRecipe(payload)
       .then((resp) => resp.json())
       .then((data) => {
-        actions.showSuccessMessage("Tu receta ha sido creada");
-        history.push("/my-recipes");
+        if (data["msg"]) {
+          alert("error", data["msg"]);
+        } else {
+          actions.showSuccessMessage("Tu receta ha sido creada");
+          // history.push("/my-recipes");
+        }
       })
       .catch((err) => console.log(err));
   };

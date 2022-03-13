@@ -14,33 +14,22 @@ recipes = Blueprint('recipes', __name__)
 @recipes.route('/create', methods=["POST"])
 @jwt_required()
 def create_recipe():
-    try:
-        img = request.files['img']
-        print(f"cloudinary api key:{cloudinary._config.api_key}")
-        img_data = upload(img)
-       
-          
-    except KeyError as error:
-        logger.error("Missing img key in form-data")
-        raise APIException(status_code=400, payload={
-            'error': {
-                'message': 'Missing img key in form-data',
-            }
-        })
-   
-    except Exception as error:
-        logger.error("Error uploading img to cloudinary")
-        logger.exception(error)
-        raise APIException(status_code=400, payload={
-            'error': {
-                'message': 'Error uploading img to cloudinary',
-            }
-        })
+    img = request.files.get('img')
+    if img:
+        try:
+            img = upload(img)["url"] 
+        except Exception as error:
+            logger.error("Error uploading img to cloudinary")
+            logger.exception(error)
+            raise APIException(status_code=400, payload={
+                'error': {
+                    'message': 'Error uploading img to cloudinary',
+                }
+            })
 
-    url_img =img_data["url"]
     body = request.form.to_dict()
     
-    new_recipe = controller.create_recipe(body, url_img)
+    new_recipe = controller.create_recipe(body, img)
     if new_recipe is None:
         return jsonify('Internal server error'), 500
     elif new_recipe == False:

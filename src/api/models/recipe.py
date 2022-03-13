@@ -12,7 +12,7 @@ class Recipe(db.Model):
   
 
     def __repr__(self):
-        return '<Recipe %r>' % self.id
+        return f'<Recipe {self.id} {self.title}>'
 
     def serialize(self):
         return {
