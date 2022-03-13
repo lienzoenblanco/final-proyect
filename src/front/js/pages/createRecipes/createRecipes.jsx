@@ -99,8 +99,6 @@ export const CreateRecipes = () => {
       tag,
       img,
       private: isPrivate,
-      // TODO: no enviar el id_user lo tiene que sacar del jwt el backend
-      id_user: 1,
       ingredient_list: ingredient_list,
     };
     createRecipe(payload)
@@ -110,7 +108,7 @@ export const CreateRecipes = () => {
           alert("error", data["msg"]);
         } else {
           actions.showSuccessMessage("Tu receta ha sido creada");
-          // history.push("/my-recipes");
+          history.push("/my-recipes");
         }
       })
       .catch((err) => console.log(err));

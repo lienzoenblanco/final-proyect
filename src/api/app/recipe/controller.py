@@ -1,4 +1,6 @@
 import json
+from flask_jwt_extended import get_jwt_identity
+
 from sqlalchemy.exc import IntegrityError,InvalidRequestError
 
 from api.utils import APIException
@@ -22,7 +24,7 @@ def create_recipe(body, url_img=None):
         "title":body.get('title'),
         "description": body.get('description'),
         "private": bool(body.get('private')),
-        "id_user": body.get('id_user'), 
+        "id_user": get_jwt_identity()['id'], 
         "tag": body.get('tag')           
     }
 
