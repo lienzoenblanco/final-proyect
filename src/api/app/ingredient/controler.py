@@ -8,17 +8,16 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-def list_ingredient(page=1, per_page=20, search=""):
-    ingredient_page = Ingredient.query.filter(Ingredient.name.ilike(f'%{search}%')).paginate(page,per_page)
+def list_ingredient():
+    ingredient_page = Ingredient.query.all()
     
     ingredient_list = [] 
-    for ingredient in ingredient_page.items:
+    for ingredient in ingredient_page:
         ingredient_list.append(ingredient.serialize()) 
 
     return dict(
         items=ingredient_list, 
-        total=ingredient_page.total, 
-        current_page=ingredient_page.page
+        total=len(ingredient_page), 
     )
 
 

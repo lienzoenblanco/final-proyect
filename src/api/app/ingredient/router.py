@@ -18,8 +18,6 @@ def add_ingredient():
 
 @ingredients.route('/', methods=['GET'])
 def get_ingredient_list():
-    page = int(request.args.get('page', 1))
-    search = request.args.get('search')
-    ingredient_list = list_ingredient(page=page, search=search)
+    ingredient_list = list_ingredient()
 
     return jsonify(ingredient_list), 200

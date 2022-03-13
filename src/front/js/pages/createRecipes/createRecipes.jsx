@@ -1,27 +1,36 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../store/appContext";
+import Select from "react-select";
 
 import { createRecipe } from "../../service/recipe";
+import { listIngredient } from "../../service/ingredient";
 
 import "../createRecipes/createRecipes.css";
 
 export const CreateRecipes = () => {
   const { actions } = useContext(Context);
   const history = useHistory();
-  const defaulnIngredient = {
-    name: "",
-    id_ingredient: null,
-    quantity: 1,
-  };
   const [ingredientList, setIngredientList] = useState([]);
-  const [ingredient, setIngredient] = useState({ ...defaulnIngredient });
+  const [selectedIngredientList, setSelectedIngredientList] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
   const [img, setImg] = useState();
   const [isPrivate, setIsPrivate] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    listIngredient()
+      .then((response) => response.json())
+      .then((data) => {
+        setIngredientList(
+          data.items.map((ingredient) => {
+            return { value: ingredient.id, label: ingredient.name };
+          })
+        );
+      });
+  }, []);
 
   const isFormValid = () => {
     if (title.length == 0) {
@@ -70,23 +79,15 @@ export const CreateRecipes = () => {
     setIsPrivate(event.target.checked);
   };
 
-  const handleChangeIngredient = (event) => {
-    setIngredient({ ...ingredient, name: event.target.value });
+  const handleChangeIngredient = (selectedIngredientList) => {
+    setSelectedIngredientList(selectedIngredientList);
   };
 
-  const addNewIngredient = (event) => {
+  const remove = (event, ingredientId) => {
     event.preventDefault();
-    if (ingredient.name.trim().length !== 0) {
-      setIngredientList([...ingredientList, ingredient]);
-    }
-    setIngredient({ ...defaulnIngredient });
-  };
-
-  const remove = (event, position) => {
-    event.preventDefault();
-    setIngredientList(
-      ingredientList.filter((item, i) => {
-        return i != position;
+    setSelectedIngredientList(
+      selectedIngredientList.filter((item) => {
+        return item.value != ingredientId;
       })
     );
   };
@@ -168,35 +169,14 @@ export const CreateRecipes = () => {
         </div>
       </div>
       <div className="row">
-        <form onSubmit={addNewIngredient}>
-          <p>Ingredientes:</p>
-          <input
-            type="text"
-            onChange={handleChangeIngredient}
-            value={ingredient.name}
-            className="form-control ingredients"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-default"
-          />
-          <ul>
-            {ingredientList.map((ingredientPrint, index) => {
-              return (
-                <li key={index}>
-                  {ingredientPrint.name}
-                  <a
-                    className="icon"
-                    href=""
-                    onClick={(event) => {
-                      remove(event, index);
-                    }}
-                  >
-                    X
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </form>
+        <p>Ingredientes:</p>
+        <Select
+          isMulti
+          options={ingredientList}
+          onChange={handleChangeIngredient}
+          isSearchable={true}
+          isClearable={true}
+        />
       </div>
 
       <div className="row">
