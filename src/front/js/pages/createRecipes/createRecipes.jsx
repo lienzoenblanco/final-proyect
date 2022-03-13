@@ -17,6 +17,8 @@ export const CreateRecipes = () => {
   const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
   const [img, setImg] = useState();
+  const [fileUrl, setFileUrl] = useState();
+
   const [isPrivate, setIsPrivate] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -62,34 +64,25 @@ export const CreateRecipes = () => {
 
   const handleChangeImg = (e) => {
     if (e.target.files) {
-      console.log(e.target.files);
-      setImg(e.target.files[0]);
+      const img = e.target.files[0];
+      setImg(img);
 
-      // const reader = new FileReader();
-      // reader.onload = (e) => {
-      // 	if (reader.readyState === 2) {
-      // 		setFileUrl(reader.result);
-      // 	}
-      // };
-      // reader.readAsDataURL(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (reader.readyState === 2) {
+          setFileUrl(reader.result);
+        }
+      };
+      reader.readAsDataURL(img);
     }
+  };
+
+  const changeImage = () => {
+    document.getElementById("image").click();
   };
 
   const handleChangeIsPrivate = (event) => {
     setIsPrivate(event.target.checked);
-  };
-
-  const handleChangeIngredient = (selectedIngredientList) => {
-    setSelectedIngredientList(selectedIngredientList);
-  };
-
-  const remove = (event, ingredientId) => {
-    event.preventDefault();
-    setSelectedIngredientList(
-      selectedIngredientList.filter((item) => {
-        return item.value != ingredientId;
-      })
-    );
   };
 
   const handleChangeDescription = (event) => {
@@ -160,12 +153,23 @@ export const CreateRecipes = () => {
         <div className="input-group mb-3">
           <input
             onChange={handleChangeImg}
-            id="input-b1"
+            id="image"
             name="input-b1"
             type="file"
-            className="file"
+            className="file d-none"
             data-browse-on-zone-click="true"
           />
+          {img ? (
+            <img
+              src={fileUrl}
+              className="upload-image__image"
+              onClick={changeImage}
+            />
+          ) : (
+            <label htmlFor="image" className="upload-image">
+              Selecciona la imagen de la receta
+            </label>
+          )}
         </div>
       </div>
       <div className="row">
@@ -173,7 +177,7 @@ export const CreateRecipes = () => {
         <Select
           isMulti
           options={ingredientList}
-          onChange={handleChangeIngredient}
+          onChange={(data) => setSelectedIngredientList(data)}
           isSearchable={true}
           isClearable={true}
         />
