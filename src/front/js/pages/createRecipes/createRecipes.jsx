@@ -118,42 +118,44 @@ export const CreateRecipes = () => {
     <div className="container">
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       <h3>Crear nueva receta</h3>
-      <div className="row input-group mb-3">
-        <input
-          onChange={handleChangeTitle}
-          type="text"
-          className="form-control"
-          aria-label="Sizing example input"
-          aria-describedby="inputGroup-sizing-default"
-          placeholder="Título de la receta"
-        />
-      </div>
-      <div className="row input-group mb-3">
-        <select
-          className="form-select"
-          aria-label="Default select example"
-          onChange={handleChangeTag}
-        >
-          <option value="0">¿Es una comida, una cena o ambas?</option>
-          <option value="1">Comida</option>
-          <option value="2">Cena</option>
-          <option value="3">Ambas</option>
-        </select>
-        <div className="form-check">
-          <input
-            onChange={handleChangeIsPrivate}
-            className="form-check-input"
-            type="checkbox"
-            checked={isPrivate}
-            id="flexCheckDefault"
-          />
-          <label className="form-check-label" htmlFor="flexCheckDefault">
-            Esta receta es privada
-          </label>
-        </div>
-      </div>
       <div className="row">
-        <div className="input-group mb-3">
+        <div className="col">
+          <label className="form-label">Título</label>
+          <input
+            onChange={handleChangeTitle}
+            type="text"
+            className="form-control"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default"
+            placeholder="Arroz a banda"
+          />
+          <label className="form-label">
+            ¿Es una comida, una cena o ambas?
+          </label>
+          <select
+            className="form-select"
+            aria-label="Default select example"
+            onChange={handleChangeTag}
+          >
+            <option value="0">---</option>
+            <option value="1">Comida</option>
+            <option value="2">Cena</option>
+            <option value="3">Ambas</option>
+          </select>
+          <div className="form-check">
+            <input
+              onChange={handleChangeIsPrivate}
+              className="form-check-input"
+              type="checkbox"
+              checked={isPrivate}
+              id="flexCheckDefault"
+            />
+            <label className="form-check-label" htmlFor="flexCheckDefault">
+              Esta receta es privada
+            </label>
+          </div>
+        </div>
+        <div className="col">
           <input
             onChange={handleChangeImg}
             id="image"
@@ -170,35 +172,42 @@ export const CreateRecipes = () => {
             />
           ) : (
             <label htmlFor="image" className="upload-image">
-              Selecciona la imagen de la receta
+              {/* Selecciona la imagen de la receta */}
             </label>
           )}
         </div>
       </div>
       <div className="row">
-        <p>Ingredientes:</p>
-        <Select
-          isMulti
-          options={ingredientList}
-          onChange={(data) => setSelectedIngredientList(data)}
-          isSearchable={true}
-          isClearable={true}
-        />
+        <div className="col">
+          <label className="form-label">Ingredientes</label>
+          <Select
+            isMulti
+            options={ingredientList}
+            onChange={(data) => setSelectedIngredientList(data)}
+            isSearchable={true}
+            isClearable={true}
+          />
+        </div>
       </div>
 
       <div className="row">
-        <div className="form-floating">
-          <p>Descripción:</p>
+        <div className="col">
+          <label className="form-label">Descripción</label>
           <textarea
             onChange={handleChangeDescription}
             className="form-control"
-            placeholder="Leave a comment here"
-            id="floatingTextarea"
+            rows="3"
           ></textarea>
         </div>
-        <button type="button" className="btn btn-primary" onClick={submit}>
-          Crear receta
-        </button>
+      </div>
+      <div className="row">
+        <div className="col">
+          <div class="d-grid gap-2">
+            <button type="button" className="btn btn-primary" onClick={submit}>
+              Crear receta
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
