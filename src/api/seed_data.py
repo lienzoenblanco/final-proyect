@@ -46,7 +46,7 @@ data = {
             
         },
         {
-            "id": 10002,
+            "id": 10001,
             "photo": "",
             "title": "Arroz abanda",
             "description": "Sofrito de verduras, incorporar calamar, majado con ñora, ajo tostado y azafrán. Añadir fumet de moralla y arroz, sofreir 3 minutos, incorporar gambas y a darle al fuego!!!! ",
@@ -56,7 +56,7 @@ data = {
             
         },
         {
-            "id": 10003,
+            "id": 10002,
             "photo": "",
             "title": "Pollo al marsala/oporto",
             "description": "pechuga de pollo sofreir enharinada con orégano a fuego fuerte, reservar. Freir ajo laminado, incorporar champiñones , un vaso de oporto. Reducir a fuergo fuerte. Incorporar un vaso de caldo de pollo y las pechugas. Dejar cocer 5 minutos",
@@ -121,29 +121,29 @@ data = {
             
         },
     ],
-    "Recipe_ingredient":[
+    "RecipeIngredient":[
         {
             "id": 10001,
             "id_ingredient": 1,
-            "id_recipe": 1,
+            "id_recipe": 10000,
             
         },
          {
             "id": 10002,
             "id_ingredient": 1,
-            "id_recipe": 2,
+            "id_recipe": 10000,
             
         },
          {
             "id": 10003,
             "id_ingredient": 3,
-            "id_recipe": 2,
+            "id_recipe": 10000,
             
         },
          {
             "id": 10004, 
             "id_ingredient": 1,
-            "id_recipe": 3,
+            "id_recipe": 10000,
             
         }
 
