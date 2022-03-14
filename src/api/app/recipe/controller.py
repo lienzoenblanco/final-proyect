@@ -26,7 +26,7 @@ def create_recipe(body, url_img=None):
         "title":body.get('title'),
         "description": body.get('description'),
         "private": bool(body.get('private')),
-        "id_user": get_jwt_identity()['id'], 
+        "id_user": body.get('id_user'), 
         "tag": body.get('tag')           
     }
 

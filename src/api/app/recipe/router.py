@@ -39,18 +39,18 @@ def create_recipe():
 
 
     body = request.form.to_dict()
-    
+    body['id_user'] = get_jwt_identity()['id']
     new_recipe = controller.create_recipe(body, img)
-
-    #save the recipe created in my_recipe:
-    save_in_my_recipe(body, new_recipe["id"])
-
+    
     if new_recipe is None:
         return jsonify('Internal server error'), 500
-    elif new_recipe == False:
+    if new_recipe == False:
         return jsonify('Bad Request'), 400
-    else:
-        return jsonify(new_recipe), 201
+   
+    #save the recipe created in my_recipe:
+    controller.save_in_my_recipe(body, new_recipe["id"])
+
+    return jsonify(new_recipe), 201
 
 
 #save public recipe in MyRecipe: body with recipe_id, id_user and tag
