@@ -3,10 +3,11 @@ from api.models.db import db
 class RecipeIngredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_ingredient= db.Column(db.Integer, db.ForeignKey('ingredient.id'))
-    ingredient = db.relationship('Ingredient', backref='recipe_ingredient')
     id_recipe= db.Column(db.Integer, db.ForeignKey('recipe.id'))
-    recipe = db.relationship('Recipe', backref='recipe_ingredient')
   
+    # ingredient = db.relationship('Ingredient')
+    # recipe = db.relationship('Recipe')
+
   
 
     def __repr__(self):
@@ -17,6 +18,4 @@ class RecipeIngredient(db.Model):
             "id": self.id,
             "id_ingredient": self.id_ingredient,
             "id_recipe": self.id_recipe,
-            
-            
         }
