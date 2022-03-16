@@ -10,7 +10,7 @@ class Recipe(db.Model):
     id_user= db.Column(db.Integer, db.ForeignKey('user.id'))
   
     user = db.relationship('User', backref='recipe_user')
-    ingredients = db.relationship('RecipeIngredient')
+    recipe_ingredients = db.relationship('RecipeIngredient')
 
 
     def __repr__(self):

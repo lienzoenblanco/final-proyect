@@ -102,9 +102,20 @@ def save_in_my_recipe(body,recipe_id):
 
 
 def get_recipe(recipe_id):
-    try:   
-        return Recipe.query.get(recipe_id)
+    try:
+        recipe = Recipe.query.get(recipe_id)
+        if not recipe:
+            return None 
+        
+        ingredient_list = []
+        recipe_ingredient_list = recipe.recipe_ingredients
+        for recipe_ingredient in recipe_ingredient_list:
+            ingredient_list.append(recipe_ingredient.ingredient.serialize())
 
+        return {
+            **recipe.serialize(),
+            'ingredient_list': ingredient_list
+        }
     except Exception as error:
         logger.error("Error getting recipe")
         logger.exception(error)
