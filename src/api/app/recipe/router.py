@@ -75,7 +75,7 @@ def save_in_my_recipe():
 @recipes.route('/myrecipes/get/<id>', methods = ['GET'])
 @jwt_required()
 def get_my_recipe(id):
-       
+   
     recipe = controller.get_recipe(id)
     if recipe is None:
         return jsonify('user not found'), 404
@@ -83,7 +83,7 @@ def get_my_recipe(id):
     if recipe.get("private"):
         user_token=get_jwt_identity()
         user=User.query.get(user_token)
-        if user.id != recipe.id_user:
+        if user.id != recipe['id_user']:
              raise APIException(status_code= 403, payload={
                 'error':{
                     'message': "This recipe is private, and belongs to another user"

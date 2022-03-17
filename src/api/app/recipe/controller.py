@@ -50,7 +50,6 @@ def create_recipe(body, url_img=None):
         new_recipe = Recipe(**recipe_info)
         db.session.add(new_recipe)
         db.session.commit()
-        return new_recipe.serialize()
 
     except Exception as error:
         print("Error creating recipe:", error)
