@@ -19,12 +19,13 @@ export const createRecipe = (payload) => {
 };
 
 export const listRecipe = () => {
-  console.log(BaseUrl)
-  console.log("en el list recipe")
+  console.log(BaseUrl);
+  console.log("en el list recipe");
+  console.log(localStorage.getItem("token"));
   return fetch(`${BaseUrl}/recipe/myrecipes`, {
     method: "GET",
+
     headers: {
-    
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
@@ -34,10 +35,9 @@ export const listRecipe = () => {
 //   return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
 //     method: "GET",
 //     headers: {
-          
+
 //       Authorization: `Bearer ${localStorage.getItem("token")}`,
 //     },
 //   });
 
-  
 // };

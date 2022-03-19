@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../store/appContext";
-import { get_myrecipe, listRecipe } from "../../service/recipe";
+import { listRecipe } from "../../service/recipe";
 import Card from "../../component/Card/card.jsx";
 import Spinner from "../../component/Spinner/spinner.jsx";
 
@@ -10,7 +10,9 @@ import "../myRecipes/myRecipes.css";
 export const MyRecipes = () => {
   const { store, actions } = useContext(Context);
   const [recipeList, setRecipeList] = useState([]);
-
+  const [copyRecipeList, setCopyRecipeList] = useState([]);
+  
+ 
   const [loading, setLoading] = useState(false);
 
   const recipes = async () => {
@@ -18,7 +20,8 @@ export const MyRecipes = () => {
       setLoading(true);
       const res = await listRecipe();
       const data = await res.json();
-      setRecipeList(data.items);
+      setRecipeList(data);
+      setCopyRecipeList(data)
     } catch (err) {
       console.log(err);
     } finally {
@@ -27,9 +30,33 @@ export const MyRecipes = () => {
   };
 
   useEffect(() => {
-    recipes();
-  }, []);
+    recipes();  
+     }, []);
 
+  console.log(recipeList,"recipeList");
+  console.log(copyRecipeList,"copyrecipeList");
+
+  const handleChange = (e) => {
+    const search = e.target.value
+    console.log(search)
+   
+
+    if (search===""){
+      setRecipeList(copyRecipeList);
+    }else {
+      
+      const newListFilter= copyRecipeList.filter(recipe =>{
+        const titleRecipe= recipe.recipe.title;
+        if(titleRecipe.toLowerCase().indexOf(search.toLowerCase()) >= 0){
+          return recipe;
+        }
+      });
+      
+    setRecipeList(newListFilter)
+    }
+  }
+ 
+       
   return (
     <div className="container">
       {store.successMessage && (
@@ -52,21 +79,20 @@ export const MyRecipes = () => {
         <Link to="/recipes/create">
           <button className="btn btn-primary">Crear receta</button>
         </Link>
-        <div className="search col-md-3">
-          <div className="input-group mb-3">
-            {" "}
+
+        
+         <div className="search col-md-3">
+          <form className="d-flex mb-3" onChange={handleChange}>
+           
             <input
-              type="text"
-              className="form-control input-text"
+              aria-label="Search"              
+              type="search"
+              className="form-control me-2"
               placeholder="Buscar receta..."
-            />
-            <div className="input-group-append">
-              {" "}
-              <button className="btn btn-success" type="button">
-                <i className="fa fa-search"></i>
-              </button>{" "}
-            </div>
-          </div>
+            />    
+           
+          
+          </form>
         </div>
       </section>
       <div className="row cards">
