@@ -1,0 +1,20 @@
+.up{
+    
+    margin:2%;
+    display: flex;
+    justify-content: space-between;
+}
+.search{
+    display:flex;
+}
+.button{
+    color: #43aa72;
+}
+.cards{
+    justify-content: space-around;
+    gap:30px;
+}
+nav{
+    margin-top: 5%;
+    bottom: 2%;
+}

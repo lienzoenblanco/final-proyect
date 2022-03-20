@@ -126,20 +126,24 @@ def get_recipe(recipe_id):
 
 
 
-def get_recipe_list(page=1, per_page=20, search=""):
-    
-        recipe_page = Recipe.query.filter(Recipe.title.ilike(f'%{search}%')).paginate(page,per_page)
-        print(recipe_page)
-        
-        recipe_list = [] 
-        for recipe in recipe_page.items:
-            recipe_list.append(recipe.serialize()) 
+def get_recipe_list(page=1, per_page=20, search=None):
 
-        return dict(
-            items=recipe_list, 
-            total=recipe_page.total, 
-            current_page=recipe_page.page
-        )
+    if not search :
+        recipe_page = Recipe.query.paginate(page,per_page)
+        
+    else:
+        recipe_page = Recipe.query.filter(Recipe.title.ilike(f'%{search}%')).paginate(page,per_page)
+       
+
+    recipe_list = [] 
+    for recipe in recipe_page.items:
+        recipe_list.append(recipe.serialize()) 
+
+    return dict(
+        items=recipe_list, 
+        total=recipe_page.total, 
+        current_page=recipe_page.page
+    )
 
 #get list recipies from my_recipe    
 def get_myrecipe_list(user_id):

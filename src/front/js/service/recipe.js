@@ -18,7 +18,6 @@ export const createRecipe = (payload) => {
   });
 };
 
-
 export const listRecipe = () => {
   console.log(BaseUrl);
   console.log("en el list recipe");
@@ -31,14 +30,18 @@ export const listRecipe = () => {
   });
 };
 
-// export const get_myrecipe =(id) => {
-//   return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
-//     method: "GET",
-//     headers: {
+export const getRecipe = (id) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
 
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-
-// };
-
+export const feedListRecipe = (search = null) => {
+  const url = new URL(`${BaseUrl}/recipe/`);
+  if (search != null && search !="") {
+    url.searchParams.append("search", search);
+  }
+  return fetch(url);
+};
