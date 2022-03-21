@@ -38,10 +38,13 @@ export const getRecipe = (id) => {
   });
 };
 
-export const feedListRecipe = (search = null) => {
+export const feedListRecipe = (search = null, page =null) => {
   const url = new URL(`${BaseUrl}/recipe/`);
   if (search != null && search !="") {
     url.searchParams.append("search", search);
+  }
+  if (page != null ) {
+    url.searchParams.append("page", page);
   }
   return fetch(url);
 };

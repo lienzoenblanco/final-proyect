@@ -1,4 +1,5 @@
 import json
+import math
 from flask_jwt_extended import get_jwt_identity
 
 from sqlalchemy.exc import IntegrityError,InvalidRequestError
@@ -141,8 +142,9 @@ def get_recipe_list(page=1, per_page=20, search=None):
 
     return dict(
         items=recipe_list, 
-        total=recipe_page.total, 
-        current_page=recipe_page.page
+        total_items=recipe_page.total, 
+        current_page=recipe_page.page,
+        total_pages =math.ceil(recipe_page.total/per_page)
     )
 
 #get list recipies from my_recipe    

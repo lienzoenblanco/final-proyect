@@ -1,12 +1,11 @@
-.up{
-    
-    margin:2%;
-    display: flex;
-    justify-content: space-between;
-}
 .search{
-    display:flex;
-}
+    
+    bottom: 0px;
+    right: 0px; 
+    padding: 20px; 
+  }
+
+
 .button{
     color: #43aa72;
 }
