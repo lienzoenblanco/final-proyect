@@ -30,6 +30,7 @@ export const listRecipe = () => {
   });
 };
 
+
 export const getRecipe = (id) => {
   return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
     headers: {
@@ -37,6 +38,7 @@ export const getRecipe = (id) => {
     },
   });
 };
+
 
 export const feedListRecipe = (search = null, page =null) => {
   const url = new URL(`${BaseUrl}/recipe/`);
