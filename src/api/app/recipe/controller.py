@@ -150,13 +150,13 @@ def get_recipe_list(page=1, per_page=20, search=None):
 #get list recipies from my_recipe    
 def get_myrecipe_list(user_id):
     
-        get_recipe_list = MyRecipe.query.filter(MyRecipe.id_user==user_id)
+        my_recipe_list = MyRecipe.query.filter(MyRecipe.id_user==user_id)
        
-        recipe_list = [] 
-        for recipe in get_recipe_list:
-            recipe_list.append(recipe.serialize()) 
+        serialized_my_recipe_list = [] 
+        for my_recipe in my_recipe_list:
+            serialized_my_recipe_list.append(my_recipe.serialize()) 
 
-        return recipe_list
+        return serialized_my_recipe_list
 
 
 
