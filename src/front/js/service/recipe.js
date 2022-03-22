@@ -30,7 +30,6 @@ export const listRecipe = () => {
   });
 };
 
-
 export const getRecipe = (id) => {
   return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
     headers: {
@@ -39,14 +38,25 @@ export const getRecipe = (id) => {
   });
 };
 
-
-export const feedListRecipe = (search = null, page =null) => {
+export const feedListRecipe = (search = null, page = null) => {
   const url = new URL(`${BaseUrl}/recipe/`);
-  if (search != null && search !="") {
+  if (search != null && search != "") {
     url.searchParams.append("search", search);
   }
-  if (page != null ) {
+  if (page != null) {
     url.searchParams.append("page", page);
   }
   return fetch(url);
+};
+
+export const deleteRecipe = (id) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    
+  });
+  
+  
 };

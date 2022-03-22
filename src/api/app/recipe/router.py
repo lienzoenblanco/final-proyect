@@ -163,6 +163,15 @@ def update_myrecipe(id):
 @jwt_required()
 def delete_in_myrecipes(id):
     try:
+
+        user_token=get_jwt_identity()
+        user=User.query.get(user_token)
+        origin_recipe = Recipe.query.get(id)
+        if user.id==Recipe.id_user and Recipe.private==true:
+           
+            db.session.delete(origin_recipe)
+            db.session.commit()
+
         recipe=  MyRecipe.query.get(id)
         db.session.delete(recipe)
         db.session.commit()

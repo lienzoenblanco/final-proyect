@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
+import { flushSync } from "react-dom";
 import { useParams } from "react-router-dom";
-import { getRecipe } from "../../service/recipe";
+import { getRecipe, deleteRecipe } from "../../service/recipe";
 
 import "../viewRecipe/viewRecipe.css";
 
@@ -20,6 +21,16 @@ export const ViewRecipe = () => {
         console.log(error);
       });
   }, []);
+
+  const token = localStorage.getItem("token");
+  // console.log(token);
+  const isDisable = () => {
+    if (token) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div className="container">
@@ -46,6 +57,24 @@ export const ViewRecipe = () => {
           <label className="form-label">Descripción</label>
           <p className="text-break">{recipe.description}</p>
         </div>
+      </div>
+
+      <div className="extraButtons">
+        <button
+          type="button"
+          className="btn btn-success btnUpdate"
+          {...isDisable()}
+        >
+          Actualizar
+        </button>
+        <button
+          type="button"
+          className="btn btn-success btnDelete"
+          onClick={deleteRecipe(recipe_id)}
+          {...isDisable()}
+        >
+          Borrar
+        </button>
       </div>
     </div>
   );
