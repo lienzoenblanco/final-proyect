@@ -711,20 +711,20 @@ data = {
     "Menu":[
         {
             "id": 1000,
-            "title": "Menus ligth",
             "create_at": datetime.datetime.now(),
+            "assignation_date": datetime.datetime.now(),
             "id_user": 100000002,
         },
         {
             "id": 1002,
-            "title": "Menus niños",
             "create_at":  datetime.datetime.now(),
+            "assignation_date": datetime.datetime.now(),
             "id_user": 100000002,
         },
         {
             "id": 1003,
-            "title": "Menu verano",
             "create_at": datetime.datetime.now(),
+            "assignation_date": datetime.datetime.now(),
             "id_user": 100000001,
         }
 
