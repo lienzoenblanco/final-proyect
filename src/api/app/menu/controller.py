@@ -22,7 +22,11 @@ def get_menu(assignation_date):
         recipe_list = []
         recipe_menu_list = menu.recipe_menu
         for recipe_menu in recipe_menu_list:
-            recipe_list.append(recipe_menu.recipe.serialize())
+            recipe_list.append({
+                "id": recipe_menu.recipe.id,
+                "title": recipe_menu.recipe.title,
+                "tag": recipe_menu.recipe.tag
+            })
 
         return {
             **menu.serialize(),
