@@ -25,7 +25,8 @@ def get_menu(assignation_date):
             recipe_list.append({
                 "id": recipe_menu.recipe.id,
                 "title": recipe_menu.recipe.title,
-                "tag": recipe_menu.recipe.tag
+                "selected_tag": recipe_menu.selected_tag,
+                "selected_date": recipe_menu.selected_date,
             })
 
         return {
