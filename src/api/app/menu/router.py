@@ -42,12 +42,11 @@ def generate_auto_menu():
                 'message': "missing assignation date",
             }
         })
-    import pdb;pdb.set_trace()
-    body['assignation_date'] = datetime.strptime(body.get('assignation_date'), "%Y-%m-%dT%H:%M:%S.%fZ")
 
+    body['assignation_date'] = datetime.strptime(body.get('assignation_date'), "%Y-%m-%dT%H:%M:%S.%fZ")
     body['id_user'] = get_jwt_identity()['id']
 
     
-    # new_auto_menu = controller.generate_auto_menu(body)
+    new_auto_menu = controller.generate_auto_menu(body)
 
-    return jsonify("new_auto_menu"), 201
+    return jsonify(new_auto_menu), 201
