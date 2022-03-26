@@ -41,3 +41,6 @@ def get_menu(assignation_date):
                 'message': "Error getting menu",
             }
         })
+
+
+# def generate_auto_menu(body):
