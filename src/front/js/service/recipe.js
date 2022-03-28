@@ -89,3 +89,17 @@ export const updateTag = (id_recipe, tag) => {
     },
   });
 };
+
+export const saveRecipe = (id_recipe, tag) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/save`, {
+    method: "POST",
+    body: JSON.stringify({
+      id_recipe: id_recipe,
+      tag: tag,
+    }),
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
+};

@@ -6,6 +6,7 @@ import {
   deleteRecipe,
   getTag,
   updateTag,
+  saveRecipe,
 } from "../../service/recipe";
 import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
@@ -46,6 +47,11 @@ export const ViewRecipe = () => {
 
   const token = localStorage.getItem("token");
   // console.log(token);
+
+  const isOwner = () => recipe.is_owner;
+
+  const isSaved = () => recipe.is_saved;
+
   const isDisable = () => {
     if (token) {
       return "";
@@ -55,18 +61,32 @@ export const ViewRecipe = () => {
   };
 
   const handleChangeTag = (event) => {
-    setTag(event.target.value);
-    updateTag(recipe_id, tag)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data["msg"]) {
-          alert("error", data["msg"]);
-        } else {
-          actions.showSuccessMessage("Tu receta ha sido actualizada");
-          history.push("/my-recipes");
-        }
-      })
-      .catch((err) => console.log(err));
+    console.log("Tag: " + tag);
+    if (recipe.is_saved) {
+      updateTag(recipe_id, tag)
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data["msg"]) {
+            alert("error", data["msg"]);
+          } else {
+            actions.showSuccessMessage("La receta ha sido actualizada");
+            history.push("/my-recipes");
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      saveRecipe(recipe.id, tag)
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data["msg"]) {
+            alert("error", data["msg"]);
+          } else {
+            actions.showSuccessMessage("La receta ha sido guardada");
+            history.push("/my-recipes");
+          }
+        });
+      history.push("/my-recipes");
+    }
   };
   const editRecipe = () => {
     if (recipe.is_owner == true) {
@@ -79,6 +99,10 @@ export const ViewRecipe = () => {
   const onDeleteRecipe = () => {
     deleteRecipe(recipe.id);
     history.push("/my-recipes");
+  };
+
+  const onSaveRecipeClick = () => {
+    setShowModal(true);
   };
 
   const tag_option = () => {
@@ -127,8 +151,16 @@ export const ViewRecipe = () => {
         <button
           type="button"
           className="btn btn-success btnUpdate"
-          onClick={editRecipe}          
-          {...isDisable()}
+          onClick={onSaveRecipeClick}
+          disabled={isSaved()}
+        >
+          Guardar
+        </button>
+        <button
+          type="button"
+          className="btn btn-success btnUpdate"
+          onClick={editRecipe}
+          disabled={!isSaved()}
         >
           Editar
         </button>
@@ -137,7 +169,7 @@ export const ViewRecipe = () => {
           type="button"
           className="btn btn-success btnDelete"
           onClick={onDeleteRecipe}
-          {...isDisable()}
+          disabled={!isSaved()}
         >
           Borrar
         </button>
@@ -153,7 +185,13 @@ export const ViewRecipe = () => {
             <label className="form-label">
               ¿Es una comida, una cena o ambas?
             </label>
-            <select className="form-select" aria-label="Default select example">
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              onChange={(event) => {
+                setTag(event.target.value);
+              }}
+            >
               <option value="0">---</option>
               <option value="1">Comida</option>
               <option value="2">Cena</option>

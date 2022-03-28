@@ -146,6 +146,7 @@ def get_recipe(recipe_id, user_id=None):
             **recipe.serialize(),
             'ingredient_list': ingredient_list,
             'is_owner': is_owner,
+            'is_saved': bool(my_rec),
             'tag': tag
         }
     except APIException as e:

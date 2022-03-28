@@ -60,6 +60,12 @@ def save_in_my_recipe():
     body = request.get_json()
     recipe_id = body.get('id_recipe')
    
+    user_token=get_jwt_identity()    
+    user=User.query.get(user_token)
+    id_user = user.id
+
+    body["id_user"] = id_user
+    
     if recipe_id is None:
         logger.error("missing recipe_id")
         raise APIException(status_code=400, payload={
@@ -67,6 +73,7 @@ def save_in_my_recipe():
                 'message': "missing recipe_id",
             }
         })
+    
     controller.save_in_my_recipe(body,recipe_id)
 
     return jsonify("Recipe saved correctly"), 201
