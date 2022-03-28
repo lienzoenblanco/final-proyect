@@ -65,7 +65,7 @@ export const deleteRecipe = (id) => {
     },
   });
 };
-    
+
 export const updateRecipe = (id, recipe) => {
   return fetch(`${BaseUrl}/recipe/update/${id}`, {
     method: "PUT",
@@ -76,7 +76,7 @@ export const updateRecipe = (id, recipe) => {
     },
   });
 };
-  
+
 export const updateTag = (id_recipe, tag) => {
   return fetch(`${BaseUrl}/recipe/myrecipes/update/${id_recipe}`, {
     method: "PUT",

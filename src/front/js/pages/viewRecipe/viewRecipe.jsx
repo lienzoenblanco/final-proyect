@@ -48,8 +48,11 @@ export const ViewRecipe = () => {
   // console.log(token);
   const isDisable = () => {
     if (token) {
-      return true;
+      return "";
     } else {
+      return "disabled";
+    }
+  };
 
   const handleChangeTag = (event) => {
     setTag(event.target.value);

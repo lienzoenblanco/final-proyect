@@ -17,7 +17,8 @@ class MyRecipe(db.Model):
         return {
             "id": self.id,
             "user": self.user.serialize(),
-            "recipe": self.recipe.serialize()
+            "recipe": self.recipe.serialize(),
+            "tag": self.tag 
             
             
         }
