@@ -19,9 +19,6 @@ export const createRecipe = (payload) => {
 };
 
 export const listRecipe = () => {
-  console.log(BaseUrl);
-  console.log("en el list recipe");
-  console.log(localStorage.getItem("token"));
   return fetch(`${BaseUrl}/recipe/myrecipes`, {
     method: "GET",
     headers: {
@@ -29,7 +26,6 @@ export const listRecipe = () => {
     },
   });
 };
-
 
 export const getRecipe = (id) => {
   return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
@@ -39,13 +35,12 @@ export const getRecipe = (id) => {
   });
 };
 
-
-export const feedListRecipe = (search = null, page =null) => {
+export const feedListRecipe = (search = null, page = null) => {
   const url = new URL(`${BaseUrl}/recipe/`);
-  if (search != null && search !="") {
+  if (search != null && search != "") {
     url.searchParams.append("search", search);
   }
-  if (page != null ) {
+  if (page != null) {
     url.searchParams.append("page", page);
   }
   return fetch(url);
