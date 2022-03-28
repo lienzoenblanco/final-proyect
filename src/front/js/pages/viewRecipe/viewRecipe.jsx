@@ -192,10 +192,18 @@ export const ViewRecipe = () => {
                 setTag(event.target.value);
               }}
             >
-              <option value="0">---</option>
-              <option value="1">Comida</option>
-              <option value="2">Cena</option>
-              <option value="3">Ambas</option>
+              <option value="0" selected={recipe.tag == 0}>
+                ---
+              </option>
+              <option value="1" selected={recipe.tag == 1}>
+                Comida
+              </option>
+              <option value="2" selected={recipe.tag == 2}>
+                Cena
+              </option>
+              <option value="3" selected={recipe.tag == 3}>
+                Ambas
+              </option>
             </select>
           </Modal.Body>
           <Modal.Footer>
