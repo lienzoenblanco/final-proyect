@@ -59,4 +59,15 @@ export const deleteRecipe = (id) => {
   });
   
   
+export const updateTag = (id_recipe, tag) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/update/${id_recipe}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      tag: tag,
+    }),
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
 };
