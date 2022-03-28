@@ -65,6 +65,18 @@ export const ViewRecipe = () => {
       })
       .catch((err) => console.log(err));
   };
+  const editRecipe = () => {
+    if (recipe.is_owner == true) {
+      history.push(`/recipes/update/${recipe.id}`);
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const onDeleteRecipe = () => {
+    deleteRecipe(recipe.id);
+    history.push("/my-recipes");
+  };
 
   const tag_option = () => {
     if (tag == 1) {
@@ -112,14 +124,16 @@ export const ViewRecipe = () => {
         <button
           type="button"
           className="btn btn-success btnUpdate"
+          onClick={editRecipe}          
           {...isDisable()}
         >
-          Actualizar
+          Editar
         </button>
+
         <button
           type="button"
           className="btn btn-success btnDelete"
-          onClick={deleteRecipe(recipe_id)}
+          onClick={onDeleteRecipe}
           {...isDisable()}
         >
           Borrar
