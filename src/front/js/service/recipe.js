@@ -28,7 +28,15 @@ export const listRecipe = () => {
 };
 
 export const getRecipe = (id) => {
-  return fetch(`${BaseUrl}/recipe/myrecipes/get/${id}`, {
+  return fetch(`${BaseUrl}/recipe/get/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const getTag = (id_recipe) => {
+  return fetch(`${BaseUrl}/recipe/myrecipe/${id_recipe}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -44,4 +52,51 @@ export const feedListRecipe = (search = null, page = null) => {
     url.searchParams.append("page", page);
   }
   return fetch(url);
+};
+
+export const deleteRecipe = (id) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const updateRecipe = (id, recipe) => {
+  return fetch(`${BaseUrl}/recipe/update/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(recipe),
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const updateTag = (id_recipe, tag) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/update/${id_recipe}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      tag: tag,
+    }),
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const saveRecipe = (id_recipe, tag) => {
+  return fetch(`${BaseUrl}/recipe/myrecipes/save`, {
+    method: "POST",
+    body: JSON.stringify({
+      id_recipe: id_recipe,
+      tag: tag,
+    }),
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
 };
