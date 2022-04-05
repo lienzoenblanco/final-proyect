@@ -104,7 +104,6 @@ def get_myRecipe(id_recipe):
        
 # get for public recipes without token   
 @recipes.route('/get/<id>', methods = ['GET'])
-@jwt_required(optional=True)
 def get_recipe(id):           
     user_token=get_jwt_identity()    
     user_id = None
