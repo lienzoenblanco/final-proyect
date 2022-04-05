@@ -76,7 +76,9 @@ def save_in_my_recipe():
     
     controller.save_in_my_recipe(body,recipe_id)
 
-    return jsonify("Recipe saved correctly"), 201
+def get_public_recipe(id):
+           
+    recipe = controller.get_recipe(id)
 
 
 #get MyRecipe: body with id_recipe
