@@ -203,7 +203,10 @@ export const MyMenus = () => {
                   {getLunchList().map((menu_recipe) => {
                     return (
                       <td key={menu_recipe.id}>
-                        <Link to={`/recipes/${menu_recipe.recipe.id}`}>
+                        <Link
+                          to={`/recipes/${menu_recipe.recipe.id}`}
+                          className="link"
+                        >
                           {menu_recipe.recipe.title}
                         </Link>
                       </td>
@@ -214,7 +217,10 @@ export const MyMenus = () => {
                   {getDinnerList().map((menu_recipe) => {
                     return (
                       <td key={menu_recipe.id}>
-                        <Link to={`/recipes/${menu_recipe.recipe.id}`}>
+                        <Link
+                          to={`/recipes/${menu_recipe.recipe.id}`}
+                          className="link"
+                        >
                           {menu_recipe.recipe.title}
                         </Link>
                       </td>
