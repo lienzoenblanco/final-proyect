@@ -205,9 +205,17 @@ export const MyMenus = () => {
                       <td key={menu_recipe.id}>
                         <Link
                           to={`/recipes/${menu_recipe.recipe.id}`}
-                          className="link"
+                          className="link d-flex flex-column"
                         >
                           {menu_recipe.recipe.title}
+                          {menu_recipe.recipe.photo && (
+                            <img
+                              src={menu_recipe.recipe.photo}
+                              className="image-menu "
+                              width="170"
+                              height="100"
+                            />
+                          )}
                         </Link>
                       </td>
                     );
@@ -219,9 +227,17 @@ export const MyMenus = () => {
                       <td key={menu_recipe.id}>
                         <Link
                           to={`/recipes/${menu_recipe.recipe.id}`}
-                          className="link"
+                          className="link d-flex flex-column"
                         >
                           {menu_recipe.recipe.title}
+                          {menu_recipe.recipe.photo && (
+                            <img
+                              src={menu_recipe.recipe.photo}
+                              className="image-menu"
+                              width="170"
+                              height="100"
+                            />
+                          )}
                         </Link>
                       </td>
                     );

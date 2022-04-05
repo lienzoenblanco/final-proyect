@@ -1,9 +1,13 @@
-.card-recipe{
-    width: 18rem;
-    padding: 1%;
+.card-recipe {
+  width: 18rem;
+  padding: 1%;
 }
 
-.card-body{
-    text-align: center;
-    padding:5%;
+.card-body {
+  text-align: center;
+  padding: 5%;
+}
+
+.card-img-top {
+  object-fit: contain;
 }

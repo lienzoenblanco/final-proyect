@@ -36,6 +36,7 @@ def get_menu(assignation_date):
                 "recipe": {
                     "id":  recipe_menu.recipe.id,
                     "title": recipe_menu.recipe.title,
+                    "photo": recipe_menu.recipe.photo,
                 }
             })
 
