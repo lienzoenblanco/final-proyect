@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
+import { Link } from "react-router-dom";
 
 import { getMenu, autoMenu } from "../../service/menu";
 
@@ -27,6 +28,7 @@ export const MyMenus = () => {
           setMenuNotFound(true);
         } else {
           setLoading(false);
+          setMenuNotFound(false);
           setMenu(data);
         }
       });
@@ -126,6 +128,47 @@ export const MyMenus = () => {
           No tienes recetas suficientes para crear un menú.
         </div>
       )}
+      <section className="move-weeks d-flex flex-row">
+        <span onClick={previousWeek}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="currentColor"
+            className="bi bi-arrow-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+            />
+          </svg>
+        </span>
+        <span onClick={nextWeek}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="currentColor"
+            className="bi bi-arrow-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+            />
+          </svg>
+        </span>
+
+        <span className="month">
+          {capitalize(
+            currentDate.toLocaleDateString("es-es", {
+              month: "long",
+              year: "numeric",
+            })
+          )}
+        </span>
+      </section>
       {menuNotFound ? (
         <section className="new-menu">
           <button className="btn btn-primary" onClick={newMenu}>
@@ -138,51 +181,11 @@ export const MyMenus = () => {
         </section>
       ) : (
         <div>
-          <section className="move-weeks">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              className="bi bi-arrow-left"
-              viewBox="0 0 16 16"
-              onClick={previousWeek}
-            >
-              <path
-                fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-              />
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              className="bi bi-arrow-right"
-              viewBox="0 0 16 16"
-              onClick={nextWeek}
-            >
-              <path
-                fill-rule="evenodd"
-                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-              />
-            </svg>
-
-            <div>
-              <label className="month">
-                {capitalize(
-                  currentDate.toLocaleDateString("es-es", {
-                    month: "long",
-                    year: "numeric",
-                  })
-                )}
-              </label>
-            </div>
-          </section>
           <div className="table-responsive-lg">
             <table className="table">
               <thead>
                 <tr>
+                  <th></th>
                   {week.map((day, i) => {
                     return (
                       <th key={i}>
@@ -199,16 +202,48 @@ export const MyMenus = () => {
               </thead>
               <tbody>
                 <tr>
+                  <th>Comida</th>
                   {getLunchList().map((menu_recipe) => {
                     return (
-                      <td key={menu_recipe.id}>{menu_recipe.recipe.title}</td>
+                      <td key={menu_recipe.id}>
+                        <Link
+                          to={`/recipes/${menu_recipe.recipe.id}`}
+                          className="link d-flex flex-column"
+                        >
+                          {menu_recipe.recipe.title}
+                          {menu_recipe.recipe.photo && (
+                            <img
+                              src={menu_recipe.recipe.photo}
+                              className="image-menu "
+                              width="170"
+                              height="100"
+                            />
+                          )}
+                        </Link>
+                      </td>
                     );
                   })}
                 </tr>
                 <tr>
+                  <th>Cena</th>
                   {getDinnerList().map((menu_recipe) => {
                     return (
-                      <td key={menu_recipe.id}>{menu_recipe.recipe.title}</td>
+                      <td key={menu_recipe.id}>
+                        <Link
+                          to={`/recipes/${menu_recipe.recipe.id}`}
+                          className="link d-flex flex-column"
+                        >
+                          {menu_recipe.recipe.title}
+                          {menu_recipe.recipe.photo && (
+                            <img
+                              src={menu_recipe.recipe.photo}
+                              className="image-menu"
+                              width="170"
+                              height="100"
+                            />
+                          )}
+                        </Link>
+                      </td>
                     );
                   })}
                 </tr>

@@ -6,7 +6,13 @@ import { Link } from "react-router-dom";
 const Card = (props) => {
   return (
     <div className="card card-recipe">
-      <img src={props.img} className="card-img-top" alt="..." />
+      <img
+        src={props.img}
+        className="card-img-top"
+        alt="..."
+        width="210"
+        height="180"
+      />
       <div className="card-body">
         <h5 className="card-title">{props.title}</h5>
         <Link to={`/recipes/${props.id}`} href="#" className="btn btn-primary">
