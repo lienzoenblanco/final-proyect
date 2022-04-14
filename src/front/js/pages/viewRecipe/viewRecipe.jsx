@@ -45,14 +45,11 @@ export const ViewRecipe = () => {
       });
   }, []);
 
-  // console.log(token);
-
   const isOwner = () => recipe.is_owner;
 
   const isSaved = () => recipe.is_saved;
 
   const handleChangeTag = (event) => {
-    console.log("Tag: " + tag);
     if (recipe.is_saved) {
       updateTag(recipe_id, tag)
         .then((resp) => resp.json())
@@ -133,10 +130,11 @@ export const ViewRecipe = () => {
           <p className="text-break">{recipe.description}</p>
         </div>
       </div>
-
-      <div>
-        <p>Etiquetado como: {tag_option()} </p>
-      </div>
+      {store.isLogged && (
+        <div>
+          <p>Etiquetado como: {tag_option()} </p>
+        </div>
+      )}
 
       <div className="extraButtons">
         <button

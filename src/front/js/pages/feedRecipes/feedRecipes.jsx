@@ -42,15 +42,9 @@ export const FeedRecipes = () => {
 
     for (let i = 0; i < totalPages + 1; i++) {
       arr.push(i + 1);
-      console.log(arr);
       setPageList(arr);
     }
   }, [totalItems, currentPage]);
-
-  // console.log("recipeList:" + recipeList)
-  console.log("totalItems:" + totalItems);
-  console.log("totalPages:" + totalPages);
-  console.log("currentPage:" + currentPage);
 
   const handleChange = async (e) => {
     recipes(e.target.value);
@@ -112,7 +106,7 @@ export const FeedRecipes = () => {
         )}
       </div>
 
-      <nav className= "recipe-pagination" aria-label="Page navigation example">
+      <nav className="recipe-pagination" aria-label="Page navigation example">
         <ul className="pagination justify-content-center">
           <li className="page-item" onClick={previousPage}>
             <a className="page-link" href="#" aria-label="Previous">
