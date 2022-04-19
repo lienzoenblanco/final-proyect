@@ -15,9 +15,11 @@ import { CreateRecipes } from "./pages/createRecipes/createRecipes.jsx";
 import { ViewRecipe } from "./pages/viewRecipe/viewRecipe.jsx";
 import { FeedRecipes } from "./pages/feedRecipes/feedRecipes.jsx";
 import { UpdateRecipes } from "./pages/updateRecipe/updateRecipe.jsx";
+import { UserProfile } from "./pages/userprofile/userProfile.jsx";
 
 import { Navbar } from "./component/navbar/navbar.jsx";
 import { Footer } from "./component/footer.jsx";
+import SuccessMessage from "./component/SuccessMessage/SuccessMessage.jsx";
 
 
 //create your first component
@@ -31,6 +33,7 @@ const Layout = () => {
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <Navbar />
+          <SuccessMessage/>
           <Switch>
             <Route exact path="/">
               <Landing />
@@ -40,6 +43,9 @@ const Layout = () => {
             </Route>
             <Route exact path="/register">
               <Register />
+            </Route>
+            <Route exact path="/my-profile">
+              <UserProfile />
             </Route>
             <Route exact path="/my-recipes">
               <MyRecipes />
