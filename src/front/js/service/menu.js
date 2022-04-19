@@ -21,3 +21,16 @@ export const autoMenu = (assignation_date) => {
     },
   });
 };
+
+export const replaceRecipeMenu = (id_recipe_menu, new_id_recipe) => {
+  return fetch(`${BaseUrl}/menu/recipe_menu/${id_recipe_menu}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      id_recipe: new_id_recipe,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};

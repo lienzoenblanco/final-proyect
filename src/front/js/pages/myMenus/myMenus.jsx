@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import { Link } from "react-router-dom";
+import Select from "react-select";
 
-import { getMenu, autoMenu } from "../../service/menu";
+import { getMenu, autoMenu, replaceRecipeMenu } from "../../service/menu";
 
 import "../myMenus/myMenus.css";
 
@@ -10,6 +11,9 @@ export const MyMenus = () => {
   const { store, actions } = useContext(Context);
   const [menu, setMenu] = useState({});
   const [menuNotFound, setMenuNotFound] = useState(false);
+  const [updateMenu, setUpdateMenu] = useState(false);
+  const [lunchRecipeList, setLunchRecipeList] = useState([]);
+  const [dinnerRecipeList, setDinnerRecipeList] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -100,6 +104,10 @@ export const MyMenus = () => {
     );
   };
 
+  const changeMenu = () => {
+    setUpdateMenu(!updateMenu);
+  };
+
   const getLunchList = () => {
     let lunchList = [];
     if ("menu_recipe_list" in menu) {
@@ -128,8 +136,8 @@ export const MyMenus = () => {
           No tienes recetas suficientes para crear un menú.
         </div>
       )}
-      <section className="move-weeks d-flex flex-row">
-        <span onClick={previousWeek}>
+      <section className="move-weeks row">
+        <span className="col-1" onClick={previousWeek}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -144,7 +152,7 @@ export const MyMenus = () => {
             />
           </svg>
         </span>
-        <span onClick={nextWeek}>
+        <span className="col-1" onClick={nextWeek}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -160,12 +168,19 @@ export const MyMenus = () => {
           </svg>
         </span>
 
-        <span className="month">
+        <span className="month col-6">
           {capitalize(
             currentDate.toLocaleDateString("es-es", {
               month: "long",
               year: "numeric",
             })
+          )}
+        </span>
+        <span className="col">
+          {!menuNotFound && (
+            <button className="btn btn-primary" onClick={changeMenu}>
+              Modificar menú
+            </button>
           )}
         </span>
       </section>
@@ -206,20 +221,29 @@ export const MyMenus = () => {
                   {getLunchList().map((menu_recipe) => {
                     return (
                       <td key={menu_recipe.id}>
-                        <Link
-                          to={`/recipes/${menu_recipe.recipe.id}`}
-                          className="link d-flex flex-column"
-                        >
-                          {menu_recipe.recipe.title}
-                          {menu_recipe.recipe.photo && (
-                            <img
-                              src={menu_recipe.recipe.photo}
-                              className="image-menu "
-                              width="170"
-                              height="100"
-                            />
-                          )}
-                        </Link>
+                        {!updateMenu ? (
+                          <Link
+                            to={`/recipes/${menu_recipe.recipe.id}`}
+                            className="link d-flex flex-column"
+                          >
+                            {menu_recipe.recipe.title}
+                            {menu_recipe.recipe.photo && (
+                              <img
+                                src={menu_recipe.recipe.photo}
+                                className="image-menu "
+                                width="170"
+                                height="100"
+                              />
+                            )}
+                          </Link>
+                        ) : (
+                          <Select
+                            className="basic-single"
+                            // options={}
+                            isSearchable={true}
+                            isClearable={false}
+                          />
+                        )}
                       </td>
                     );
                   })}
@@ -229,20 +253,29 @@ export const MyMenus = () => {
                   {getDinnerList().map((menu_recipe) => {
                     return (
                       <td key={menu_recipe.id}>
-                        <Link
-                          to={`/recipes/${menu_recipe.recipe.id}`}
-                          className="link d-flex flex-column"
-                        >
-                          {menu_recipe.recipe.title}
-                          {menu_recipe.recipe.photo && (
-                            <img
-                              src={menu_recipe.recipe.photo}
-                              className="image-menu"
-                              width="170"
-                              height="100"
-                            />
-                          )}
-                        </Link>
+                        {!updateMenu ? (
+                          <Link
+                            to={`/recipes/${menu_recipe.recipe.id}`}
+                            className="link d-flex flex-column"
+                          >
+                            {menu_recipe.recipe.title}
+                            {menu_recipe.recipe.photo && (
+                              <img
+                                src={menu_recipe.recipe.photo}
+                                className="image-menu"
+                                width="170"
+                                height="100"
+                              />
+                            )}
+                          </Link>
+                        ) : (
+                          <Select
+                            className="basic-single"
+                            // options={}
+                            isSearchable={true}
+                            isClearable={false}
+                          />
+                        )}
                       </td>
                     );
                   })}
