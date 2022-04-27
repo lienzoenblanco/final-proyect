@@ -43,7 +43,7 @@ export const UserProfile = () => {
         if (data["error"]) {
           setErrorMessage(data["error"]["message"]);
         } else {
-          actions.showSuccessMessage("Tu perfil ha sido actualizado");          
+          actions.showSuccessMessage("Tu perfil ha sido actualizado");
           history.push("/my-profile");
         }
       })
@@ -54,7 +54,7 @@ export const UserProfile = () => {
   }
 
   return (
-    <div className="container-fluid profile">      
+    <div className="container-fluid profile">
       <div className="">
         <h1 className="my-profile-title">Mis datos</h1>
         <div>

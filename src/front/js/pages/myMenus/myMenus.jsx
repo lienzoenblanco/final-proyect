@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 
 import { getMenu, autoMenu, replaceRecipeMenu } from "../../service/menu";
+import { listRecipe } from "../../service/recipe";
 
 import "../myMenus/myMenus.css";
 
 export const MyMenus = () => {
-  const { store, actions } = useContext(Context);
   const [menu, setMenu] = useState({});
   const [menuNotFound, setMenuNotFound] = useState(false);
+
   const [updateMenu, setUpdateMenu] = useState(false);
+
   const [lunchRecipeList, setLunchRecipeList] = useState([]);
   const [dinnerRecipeList, setDinnerRecipeList] = useState([]);
 
@@ -19,9 +20,20 @@ export const MyMenus = () => {
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [week, setWeek] = useState([]);
+
   const [warningMessage, setWarningMessage] = useState("");
 
   useEffect(() => {
+    loadMenu();
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (!updateMenu) {
+      loadMenu();
+    }
+  }, [updateMenu]);
+
+  const loadMenu = () => {
     setLoading(true);
     setWeek(calculateWeek(currentDate));
     getMenu(currentDate.toISOString())
@@ -36,7 +48,7 @@ export const MyMenus = () => {
           setMenu(data);
         }
       });
-  }, [currentDate]);
+  };
 
   const newMenu = () => {
     setLoading(true);
@@ -55,6 +67,37 @@ export const MyMenus = () => {
       });
 
     setLoading(false);
+  };
+
+  const getRecipeList = () => {
+    listRecipe()
+      .then((response) => response.json())
+      .then((my_recipes) => {
+        setLunchRecipeList(
+          my_recipes
+            .filter((my_recipe) => {
+              return my_recipe.tag == 1 || my_recipe.tag == 3;
+            })
+            .map((my_recipe) => {
+              return {
+                value: my_recipe.recipe.id,
+                label: my_recipe.recipe.title,
+              };
+            })
+        );
+        setDinnerRecipeList(
+          my_recipes
+            .filter((my_recipe) => {
+              return my_recipe.tag == 2 || my_recipe.tag == 3;
+            })
+            .map((my_recipe) => {
+              return {
+                value: my_recipe.recipe.id,
+                label: my_recipe.recipe.title,
+              };
+            })
+        );
+      });
   };
 
   const capitalize = (word) => {
@@ -106,6 +149,22 @@ export const MyMenus = () => {
 
   const changeMenu = () => {
     setUpdateMenu(!updateMenu);
+    getRecipeList();
+  };
+
+  const handleChangeMenu = (new_recipe, menu_recipe_id) => {
+    replaceRecipeMenu(menu_recipe_id, new_recipe.value)
+      .then((response) => response.json())
+      .then((data) => {
+        let menu_recipe_list = menu.menu_recipe_list.map((menu_recipe) => {
+          if (menu_recipe.id == menu_recipe_id) {
+            menu_recipe.recipe.id = new_recipe.value;
+            menu_recipe.recipe.title = new_recipe.label;
+          }
+          return menu_recipe;
+        });
+        setMenu({ ...menu, menu_recipe_list: menu_recipe_list });
+      });
   };
 
   const getLunchList = () => {
@@ -115,7 +174,6 @@ export const MyMenus = () => {
         return menu_recipe.selected_tag == 1;
       });
     }
-
     return lunchList;
   };
 
@@ -179,7 +237,7 @@ export const MyMenus = () => {
         <span className="col">
           {!menuNotFound && (
             <button className="btn btn-primary" onClick={changeMenu}>
-              Modificar menú
+              {!updateMenu ? "Modificar menú" : "Guardar cambios"}
             </button>
           )}
         </span>
@@ -239,7 +297,14 @@ export const MyMenus = () => {
                         ) : (
                           <Select
                             className="basic-single"
-                            // options={}
+                            options={lunchRecipeList}
+                            onChange={(new_id_recipe) => {
+                              handleChangeMenu(new_id_recipe, menu_recipe.id);
+                            }}
+                            value={{
+                              label: menu_recipe.recipe.title,
+                              value: menu_recipe.recipe.id,
+                            }}
                             isSearchable={true}
                             isClearable={false}
                           />
@@ -271,7 +336,14 @@ export const MyMenus = () => {
                         ) : (
                           <Select
                             className="basic-single"
-                            // options={}
+                            options={dinnerRecipeList}
+                            onChange={(new_id_recipe) => {
+                              handleChangeMenu(new_id_recipe, menu_recipe.id);
+                            }}
+                            value={{
+                              label: menu_recipe.recipe.title,
+                              value: menu_recipe.recipe.id,
+                            }}
                             isSearchable={true}
                             isClearable={false}
                           />
