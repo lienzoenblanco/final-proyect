@@ -47,7 +47,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      favicon:"/workspace/make-menu-easy-planner/img/make_menu.ico",
+      favicon:"img/make_menu.ico",
 
       template: "template.html",
     }),
