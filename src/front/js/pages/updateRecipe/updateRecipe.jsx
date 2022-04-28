@@ -64,7 +64,6 @@ export const UpdateRecipes = () => {
 
   const handleChangeTitle = (event) => {
     setRecipe({ ...recipe, title: event.target.value });
-    // setTitle(event.target.value);
   };
 
   const handleChangeImg = (e) => {
@@ -100,18 +99,13 @@ export const UpdateRecipes = () => {
 
   const handleChangeIsPrivate = (event) => {
     setRecipe({ ...recipe, isPrivate: event.target.checked });
-    // setIsPrivate(event.target.checked);
   };
 
   const handleChangeDescription = (event) => {
     setRecipe({ ...recipe, description: event.target.value });
-    // setDescription(event.target.value);
   };
 
   const submit = () => {
-    // if (!isFormValid()) {
-    //   return;
-    // }
     const ingredient_list = selectedIngredientList.map((ingredient) => {
       return { id: ingredient.value, name: ingredient.label };
     });
@@ -122,7 +116,6 @@ export const UpdateRecipes = () => {
       title: recipe.title,
       description: recipe.description,
       tag: recipe.tag,
-      //private: recipe.isPrivate,
       ingredient_list: recipe.ingredient_list,
     };
 
@@ -142,9 +135,6 @@ export const UpdateRecipes = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  console.log(recipe);
-  console.log(tag);
 
   if (!canRender) {
     return <div>Loading...</div>;

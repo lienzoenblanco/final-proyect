@@ -28,10 +28,13 @@ export const listRecipe = () => {
 };
 
 export const getRecipe = (id) => {
+  let headers = {};
+  if (localStorage.getItem("token")) {
+    headers["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+  }
+
   return fetch(`${BaseUrl}/recipe/get/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
+    headers,
   });
 };
 
@@ -76,7 +79,7 @@ export const updateRecipe = (id, payload) => {
     method: "PUT",
     body: formData,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,      
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 };

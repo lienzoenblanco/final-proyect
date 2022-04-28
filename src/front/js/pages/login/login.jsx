@@ -16,7 +16,6 @@ export const Login = () => {
     loginUser(email, passw)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         if (data == "user not exist") {
           setMessage("User does not exist");
           setShowSpinner(false);

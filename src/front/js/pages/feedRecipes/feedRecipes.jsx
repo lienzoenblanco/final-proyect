@@ -6,6 +6,7 @@ import Card from "../../component/Card/card.jsx";
 import Spinner from "../../component/Spinner/spinner.jsx";
 
 import "../feedRecipes/feedRecipes.css";
+import SuccessMessage from "../../component/SuccessMessage/SuccessMessage.jsx";
 
 export const FeedRecipes = () => {
   const { store, actions } = useContext(Context);
@@ -42,15 +43,9 @@ export const FeedRecipes = () => {
 
     for (let i = 0; i < totalPages + 1; i++) {
       arr.push(i + 1);
-      console.log(arr);
       setPageList(arr);
     }
   }, [totalItems, currentPage]);
-
-  // console.log("recipeList:" + recipeList)
-  console.log("totalItems:" + totalItems);
-  console.log("totalPages:" + totalPages);
-  console.log("currentPage:" + currentPage);
 
   const handleChange = async (e) => {
     recipes(e.target.value);
@@ -70,21 +65,7 @@ export const FeedRecipes = () => {
 
   return (
     <div className="container">
-      {store.successMessage && (
-        <div
-          className="alert alert-success alert-dismissible fade show"
-          role="alert"
-        >
-          {store.successMessage}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            onClick={() => actions.cleanSuccessMessage()}
-          ></button>
-        </div>
-      )}
+     
 
       <div className="search row justify-content-md-center">
         <form className="col-md-auto" onChange={handleChange}>
@@ -112,7 +93,7 @@ export const FeedRecipes = () => {
         )}
       </div>
 
-      <nav className= "recipe-pagination" aria-label="Page navigation example">
+      <nav className="recipe-pagination" aria-label="Page navigation example">
         <ul className="pagination justify-content-center">
           <li className="page-item" onClick={previousPage}>
             <a className="page-link" href="#" aria-label="Previous">

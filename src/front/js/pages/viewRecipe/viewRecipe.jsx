@@ -16,7 +16,7 @@ import "../viewRecipe/viewRecipe.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export const ViewRecipe = () => {
-  const { actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const { recipe_id } = useParams();
   const [recipe, setRecipe] = useState({});
   const [tag, setTag] = useState();
@@ -45,23 +45,11 @@ export const ViewRecipe = () => {
       });
   }, []);
 
-  const token = localStorage.getItem("token");
-  // console.log(token);
-
   const isOwner = () => recipe.is_owner;
 
   const isSaved = () => recipe.is_saved;
 
-  const isDisable = () => {
-    if (token) {
-      return "";
-    } else {
-      return "disabled";
-    }
-  };
-
   const handleChangeTag = (event) => {
-    console.log("Tag: " + tag);
     if (recipe.is_saved) {
       updateTag(recipe_id, tag)
         .then((resp) => resp.json())
@@ -142,17 +130,18 @@ export const ViewRecipe = () => {
           <p className="text-break">{recipe.description}</p>
         </div>
       </div>
-
-      <div>
-        <p>Etiquetado como: {tag_option()} </p>
-      </div>
+      {store.isLogged && (
+        <div>
+          <p>Etiquetado como: {tag_option()} </p>
+        </div>
+      )}
 
       <div className="extraButtons">
         <button
           type="button"
           className="btn btn-success btnUpdate"
           onClick={onSaveRecipeClick}
-          disabled={isSaved()}
+          disabled={isSaved() || !store.isLogged}
         >
           Guardar
         </button>

@@ -1,22 +1,39 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Select from "react-select";
 
-import { getMenu, autoMenu } from "../../service/menu";
+import { getMenu, autoMenu, replaceRecipeMenu } from "../../service/menu";
+import { listRecipe } from "../../service/recipe";
 
 import "../myMenus/myMenus.css";
 
 export const MyMenus = () => {
-  const { store, actions } = useContext(Context);
   const [menu, setMenu] = useState({});
   const [menuNotFound, setMenuNotFound] = useState(false);
+
+  const [updateMenu, setUpdateMenu] = useState(false);
+
+  const [lunchRecipeList, setLunchRecipeList] = useState([]);
+  const [dinnerRecipeList, setDinnerRecipeList] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [week, setWeek] = useState([]);
+
   const [warningMessage, setWarningMessage] = useState("");
 
   useEffect(() => {
+    loadMenu();
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (!updateMenu) {
+      loadMenu();
+    }
+  }, [updateMenu]);
+
+  const loadMenu = () => {
     setLoading(true);
     setWeek(calculateWeek(currentDate));
     getMenu(currentDate.toISOString())
@@ -27,10 +44,11 @@ export const MyMenus = () => {
           setMenuNotFound(true);
         } else {
           setLoading(false);
+          setMenuNotFound(false);
           setMenu(data);
         }
       });
-  }, [currentDate]);
+  };
 
   const newMenu = () => {
     setLoading(true);
@@ -49,6 +67,37 @@ export const MyMenus = () => {
       });
 
     setLoading(false);
+  };
+
+  const getRecipeList = () => {
+    listRecipe()
+      .then((response) => response.json())
+      .then((my_recipes) => {
+        setLunchRecipeList(
+          my_recipes
+            .filter((my_recipe) => {
+              return my_recipe.tag == 1 || my_recipe.tag == 3;
+            })
+            .map((my_recipe) => {
+              return {
+                value: my_recipe.recipe.id,
+                label: my_recipe.recipe.title,
+              };
+            })
+        );
+        setDinnerRecipeList(
+          my_recipes
+            .filter((my_recipe) => {
+              return my_recipe.tag == 2 || my_recipe.tag == 3;
+            })
+            .map((my_recipe) => {
+              return {
+                value: my_recipe.recipe.id,
+                label: my_recipe.recipe.title,
+              };
+            })
+        );
+      });
   };
 
   const capitalize = (word) => {
@@ -98,6 +147,26 @@ export const MyMenus = () => {
     );
   };
 
+  const changeMenu = () => {
+    setUpdateMenu(!updateMenu);
+    getRecipeList();
+  };
+
+  const handleChangeMenu = (new_recipe, menu_recipe_id) => {
+    replaceRecipeMenu(menu_recipe_id, new_recipe.value)
+      .then((response) => response.json())
+      .then((data) => {
+        let menu_recipe_list = menu.menu_recipe_list.map((menu_recipe) => {
+          if (menu_recipe.id == menu_recipe_id) {
+            menu_recipe.recipe.id = new_recipe.value;
+            menu_recipe.recipe.title = new_recipe.label;
+          }
+          return menu_recipe;
+        });
+        setMenu({ ...menu, menu_recipe_list: menu_recipe_list });
+      });
+  };
+
   const getLunchList = () => {
     let lunchList = [];
     if ("menu_recipe_list" in menu) {
@@ -105,7 +174,6 @@ export const MyMenus = () => {
         return menu_recipe.selected_tag == 1;
       });
     }
-
     return lunchList;
   };
 
@@ -126,6 +194,54 @@ export const MyMenus = () => {
           No tienes recetas suficientes para crear un menú.
         </div>
       )}
+      <section className="move-weeks row">
+        <span className="col-1" onClick={previousWeek}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="currentColor"
+            className="bi bi-arrow-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+            />
+          </svg>
+        </span>
+        <span className="col-1" onClick={nextWeek}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            fill="currentColor"
+            className="bi bi-arrow-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+            />
+          </svg>
+        </span>
+
+        <span className="month col-6">
+          {capitalize(
+            currentDate.toLocaleDateString("es-es", {
+              month: "long",
+              year: "numeric",
+            })
+          )}
+        </span>
+        <span className="col">
+          {!menuNotFound && (
+            <button className="btn btn-primary" onClick={changeMenu}>
+              {!updateMenu ? "Modificar menú" : "Guardar cambios"}
+            </button>
+          )}
+        </span>
+      </section>
       {menuNotFound ? (
         <section className="new-menu">
           <button className="btn btn-primary" onClick={newMenu}>
@@ -138,51 +254,11 @@ export const MyMenus = () => {
         </section>
       ) : (
         <div>
-          <section className="move-weeks">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              className="bi bi-arrow-left"
-              viewBox="0 0 16 16"
-              onClick={previousWeek}
-            >
-              <path
-                fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-              />
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="currentColor"
-              className="bi bi-arrow-right"
-              viewBox="0 0 16 16"
-              onClick={nextWeek}
-            >
-              <path
-                fill-rule="evenodd"
-                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-              />
-            </svg>
-
-            <div>
-              <label className="month">
-                {capitalize(
-                  currentDate.toLocaleDateString("es-es", {
-                    month: "long",
-                    year: "numeric",
-                  })
-                )}
-              </label>
-            </div>
-          </section>
           <div className="table-responsive-lg">
             <table className="table">
               <thead>
                 <tr>
+                  <th></th>
                   {week.map((day, i) => {
                     return (
                       <th key={i}>
@@ -199,16 +275,80 @@ export const MyMenus = () => {
               </thead>
               <tbody>
                 <tr>
+                  <th>Comida</th>
                   {getLunchList().map((menu_recipe) => {
                     return (
-                      <td key={menu_recipe.id}>{menu_recipe.recipe.title}</td>
+                      <td key={menu_recipe.id}>
+                        {!updateMenu ? (
+                          <Link
+                            to={`/recipes/${menu_recipe.recipe.id}`}
+                            className="link d-flex flex-column"
+                          >
+                            {menu_recipe.recipe.title}
+                            {menu_recipe.recipe.photo && (
+                              <img
+                                src={menu_recipe.recipe.photo}
+                                className="image-menu "
+                                width="170"
+                                height="100"
+                              />
+                            )}
+                          </Link>
+                        ) : (
+                          <Select
+                            className="basic-single"
+                            options={lunchRecipeList}
+                            onChange={(new_id_recipe) => {
+                              handleChangeMenu(new_id_recipe, menu_recipe.id);
+                            }}
+                            value={{
+                              label: menu_recipe.recipe.title,
+                              value: menu_recipe.recipe.id,
+                            }}
+                            isSearchable={true}
+                            isClearable={false}
+                          />
+                        )}
+                      </td>
                     );
                   })}
                 </tr>
                 <tr>
+                  <th>Cena</th>
                   {getDinnerList().map((menu_recipe) => {
                     return (
-                      <td key={menu_recipe.id}>{menu_recipe.recipe.title}</td>
+                      <td key={menu_recipe.id}>
+                        {!updateMenu ? (
+                          <Link
+                            to={`/recipes/${menu_recipe.recipe.id}`}
+                            className="link d-flex flex-column"
+                          >
+                            {menu_recipe.recipe.title}
+                            {menu_recipe.recipe.photo && (
+                              <img
+                                src={menu_recipe.recipe.photo}
+                                className="image-menu"
+                                width="170"
+                                height="100"
+                              />
+                            )}
+                          </Link>
+                        ) : (
+                          <Select
+                            className="basic-single"
+                            options={dinnerRecipeList}
+                            onChange={(new_id_recipe) => {
+                              handleChangeMenu(new_id_recipe, menu_recipe.id);
+                            }}
+                            value={{
+                              label: menu_recipe.recipe.title,
+                              value: menu_recipe.recipe.id,
+                            }}
+                            isSearchable={true}
+                            isClearable={false}
+                          />
+                        )}
+                      </td>
                     );
                   })}
                 </tr>

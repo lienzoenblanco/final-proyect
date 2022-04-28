@@ -7,7 +7,7 @@ import cloudinary
 from api.utils import APIException
 from flask_jwt_extended import jwt_required
 
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from api.models.index import db, Recipe, User, Ingredient, RecipeIngredient, MyRecipe
 
 
@@ -76,7 +76,9 @@ def save_in_my_recipe():
     
     controller.save_in_my_recipe(body,recipe_id)
 
-    return jsonify("Recipe saved correctly"), 201
+def get_public_recipe(id):
+           
+    recipe = controller.get_recipe(id)
 
 
 #get MyRecipe: body with id_recipe
@@ -102,8 +104,8 @@ def get_myRecipe(id_recipe):
        
 # get for public recipes without token   
 @recipes.route('/get/<id>', methods = ['GET'])
-@jwt_required(optional=True)
 def get_recipe(id):           
+    verify_jwt_in_request(optional=True)
     user_token=get_jwt_identity()    
     user_id = None
     if user_token is not None:
@@ -115,7 +117,6 @@ def get_recipe(id):
                 }
             })
         user_id = user.id
-        print(user_id)
     
     recipe = controller.get_recipe(id, user_id)
     return jsonify(recipe)

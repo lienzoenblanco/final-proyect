@@ -1,3 +1,7 @@
+.container {
+  margin-top: 30px;
+}
+
 .month {
   font-size: 25px;
   margin-left: 3%;
@@ -10,7 +14,25 @@
 .bi {
   cursor: pointer;
 }
+.bi:hover {
+  color: #43aa72;
+}
 
 .move-weeks {
   margin-bottom: 3%;
+}
+
+.link {
+  color: black;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #43aa72;
+  font-weight: bold;
+}
+
+.image-menu {
+  object-fit: contain;
+  border: none;
 }
